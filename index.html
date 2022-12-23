@@ -4,13 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.webrtc.ecl.ntt.com/skyway-4.4.5.js"></script>
+  <link rel = "stylesheet" href = "phone.css">
   <title>SkyWayチュートリアル</title>
 </head>
 <body>
-    <video id="my-video" width="400px" autoplay playsinline></video> <!--カメラ映像を追加する領域-->
+  <div class = "cat_pic">
+    <img src = "small_cat.png" alt = "neko neko" width = "390" height = "400">
+  </div>
+    <!--　<video id="my-video" width="400px" autoplay playsinline></video>　-->
+     <!--カメラ映像を追加する領域-->
     <!-- autoplay muted = ミュート再生,
     mutedを外すと、音声が拾われる。-->
-    <p id="my-id"></p>
+    <div class = "key">
+      <p>あなたの電話番号です:</p>
+      <p id="my-id"></p>
+    </div>
     <input id="their-id"></input>
     <button id="make-call">発信</button>
     <video id="their-video" width="400px" autoplay playsinline></video>
@@ -19,18 +27,22 @@
         let localStream;
         
         //留守番電話用コード
-        var no_call = True;
+
+        var no_call = true;
         var rusuban_record = function() {
-          if (no_call == False){
+          if (no_call == true){
             voice_reader();
-            settimeout(beep(),3000);
+            setTimeout(function(){
+              beep()
+            },10000); 
+
           }
           else {
             return;
           }
         }
 
-        settimeout(rusuban_record,30000); //留守番の場合、発火される。
+        setTimeout(rusuban_record,10000); //留守番の場合、発火される。
 
       
         // カメラ映像取得
@@ -41,7 +53,7 @@
           videoElm.srcObject = stream;
           videoElm.play();
 
-          no_call = False; //留守電ではない。
+
 
           // 着信時に相手にカメラ映像を返せるように、グローバル変数に保存しておく
           localStream = stream;
@@ -84,6 +96,7 @@
         peer.on('call', mediaConnection => {
         mediaConnection.answer(localStream);
         setEventListener(mediaConnection);
+        no_call = false; //留守電ではない。
         });
       </script>
 </body>
