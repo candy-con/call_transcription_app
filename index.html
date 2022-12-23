@@ -14,8 +14,24 @@
     <input id="their-id"></input>
     <button id="make-call">発信</button>
     <video id="their-video" width="400px" autoplay playsinline></video>
+    <script src = "onsei.js"></script>
     <script>
         let localStream;
+        
+        //留守番電話用コード
+        var no_call = True;
+        var rusuban_record = function() {
+          if (no_call == False){
+            voice_reader();
+            settimeout(beep(),3000);
+          }
+          else {
+            return;
+          }
+        }
+
+        settimeout(rusuban_record,30000); //留守番の場合、発火される。
+
       
         // カメラ映像取得
         navigator.mediaDevices.getUserMedia({video: true, audio: true})
@@ -24,6 +40,9 @@
           const videoElm = document.getElementById('my-video');
           videoElm.srcObject = stream;
           videoElm.play();
+
+          no_call = False; //留守電ではない。
+
           // 着信時に相手にカメラ映像を返せるように、グローバル変数に保存しておく
           localStream = stream;
         }).catch( error => {

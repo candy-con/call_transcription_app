@@ -1,4 +1,2 @@
-// import
-import Peer from 'skyway-js';
-const peer = new Peer({key: 'あなたのAPIキー'});
+//ここでpdf化の処理を行う。
 
